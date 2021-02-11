@@ -24,32 +24,39 @@ namespace FlagFacts
 
         public Flag CurrentFlag
         {
-            get {
+            get
+            {
                 return repository.Flags[currentFlag];
             }
         }
 
         private void InitializeData()
         {
-            country.ItemsSource = (IList) repository.Countries;
-            country.SelectedItem = CurrentFlag.Country;
-            country.SelectedIndexChanged += (s, e) => CurrentFlag.Country = repository.Countries[country.SelectedIndex];
+            country.ItemsSource = (IList)repository.Countries;
+            //country.SelectedItem = CurrentFlag.Country;
+            //country.SelectedIndexChanged += (s, e) => CurrentFlag.Country = repository.Countries[country.SelectedIndex];
+            // DataBind with code
+            //country.BindingContext = CurrentFlag;
+            //country.SetBinding(Picker.SelectedItemProperty, new Binding(nameof(CurrentFlag.Country)));
 
             flagImage.Source = CurrentFlag.GetImageSource();
 
-            adopted.Date = CurrentFlag.DateAdopted;
-            adopted.DateSelected += (s, e) => CurrentFlag.DateAdopted = e.NewDate;
+            //adopted.Date = CurrentFlag.DateAdopted;
+            //adopted.DateSelected += (s, e) => CurrentFlag.DateAdopted = e.NewDate;
 
-            hasShield.IsToggled = CurrentFlag.IncludesShield;
-            hasShield.Toggled += (s, e) => CurrentFlag.IncludesShield = hasShield.IsToggled;
+            //hasShield.IsToggled = CurrentFlag.IncludesShield;
+            //hasShield.Toggled += (s, e) => CurrentFlag.IncludesShield = hasShield.IsToggled;
 
-            description.Text = CurrentFlag.Description;
+            //description.Text = CurrentFlag.Description;
+
+            // Set the binding context
+            this.BindingContext = CurrentFlag;
         }
 
         private async void OnShow(object sender, EventArgs e)
         {
             await DisplayAlert(CurrentFlag.Country,
-                $"{CurrentFlag.DateAdopted:D} - {CurrentFlag.IncludesShield}: {CurrentFlag.MoreInformationUrl}", 
+                $"{CurrentFlag.DateAdopted:D} - {CurrentFlag.IncludesShield}: {CurrentFlag.MoreInformationUrl}",
                 "OK");
         }
 
@@ -70,7 +77,7 @@ namespace FlagFacts
         {
             currentFlag++;
             if (currentFlag >= repository.Flags.Count)
-                currentFlag = repository.Flags.Count-1;
+                currentFlag = repository.Flags.Count - 1;
             InitializeData();
         }
     }
